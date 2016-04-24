@@ -12,10 +12,10 @@ import com.badlogic.gdx.utils.Array;
 import java.lang.ref.SoftReference;
 
 public class MainClass extends ApplicationAdapter {
-    SpriteBatch batch;
-    public static PlayerTank plTank;
-    final int NUMBER_OF_BOTS = 15;
-    Array<BotTank> botList = new Array<BotTank>();
+//    SpriteBatch batch;
+ //   public static PlayerTank plTank;
+ //   final int NUMBER_OF_BOTS = 15;
+ //   Array<BotTank> botList = new Array<BotTank>();
 
     @Override
     public void create() {
@@ -23,28 +23,23 @@ public class MainClass extends ApplicationAdapter {
         Thread thread = new Thread(new Server());
         thread.start();
 
-        batch = new SpriteBatch();
-        plTank = new PlayerTank(new Vector2(0, 0), new Vector2(0, 0));
-
-  /*      for (int i = 0; i < NUMBER_OF_BOTS; i++) {
-            botList.add(new BotTank(new Vector2(BotTank.rn.nextInt(800), BotTank.rn.nextInt(600)), new Vector2(BotTank.rn.nextInt(4) - 1.5f, BotTank.rn.nextInt(4) - 1.5f)));
-        }    */
+    //    batch = new SpriteBatch();
 
     }
 
     @Override
     public void render() {
-        update();
+     /*   update();
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
 
-        plTank.draw(batch);
-    /*    for (int i = 0; i < botList.size; i++) {
+       // plTank.draw(batch);
+        for (int i = 0; i < botList.size; i++) {
             botList.get(i).draw(batch);
-        }   */
+        }
 
-        batch.end();
+        batch.end();  */
 
     }
 

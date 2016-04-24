@@ -8,6 +8,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -22,16 +23,16 @@ public class Server implements Runnable {
     private DatagramSocket socket = null;
     private int serverPort = 4444;
     private final int NUMBER_OF_BOTS = 5;
-    Array<BotTank> botList = new Array<BotTank>();
+    private ArrayList<PseudoTank> botList = new ArrayList<PseudoTank>();
     private Player p1 = null;
     private Player p2 = null;
 
     public Server() {
 
-   /*     for (int i = 0; i < NUMBER_OF_BOTS; i++) {
-            botList.add(new BotTank(new Vector2(BotTank.rn.nextInt(800), BotTank.rn.nextInt(600)), new Vector2(BotTank.rn.nextInt(4) - 1.5f, BotTank.rn.nextInt(4) - 1.5f)));
+        for (int i = 0; i < NUMBER_OF_BOTS; i++) {
+            botList.add(new PseudoTank(new Vector2(BotTank.rn.nextInt(500), BotTank.rn.nextInt(500)), new Vector2(BotTank.rn.nextInt(4) - 1.5f, BotTank.rn.nextInt(4) - 1.5f)));
         }
-                          */
+
         try {
             socket = new DatagramSocket(serverPort);
         } catch (SocketException e) {
@@ -61,7 +62,7 @@ public class Server implements Runnable {
 
                             p1 = new Player(packet.getPort(), packet.getAddress(), socket);
 
-                            sendPacket(socket, packet.getAddress(), packet.getPort(), new Packet("", "p1", 0, 0));
+                            sendPacket(socket, packet.getAddress(), packet.getPort(), new Packet("", "p1", 0, 0, 0, null, botList));
 
 
                             System.out.println("Player1 is ready");
@@ -86,7 +87,7 @@ public class Server implements Runnable {
 
                                 p2 = new Player(packet.getPort(), packet.getAddress(), socket);
 
-                                sendPacket(socket, packet.getAddress(), packet.getPort(), new Packet("", "p2", 0, 0));
+                                sendPacket(socket, packet.getAddress(), packet.getPort(), new Packet("", "p2", 0, 0, 0, null, botList));
 
                                 System.out.println("Player2 is ready");
                             }
@@ -98,7 +99,6 @@ public class Server implements Runnable {
                 }
 
                 if (p1 != null && p2 != null) {
-                    //if (p1 != null) {
 
                     TimeUnit.MICROSECONDS.sleep(20);
 
@@ -106,16 +106,13 @@ public class Server implements Runnable {
 
                     if (newData.getWhoSent().trim().equals("p1")) {
                         sendPacket(socket, p2.getPlayerAddress(), p2.getPlayerPort(), newData);
-                        System.out.println("p1 sending data to p2");
                     }
 
                     if (newData.getWhoSent().trim().equals("p2")) {
                         sendPacket(socket, p1.getPlayerAddress(), p1.getPlayerPort(), newData);
-                        System.out.println("p2 sending data p1");
                     }
 
-      //              Vector2 v = new Vector2(newData.getPosX(), newData.getPosY());
-      //              MainClass.plTank.setPosition(v);
+
 
                 }
             }
