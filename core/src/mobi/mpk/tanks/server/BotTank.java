@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package mobi.mpk.tanks.server;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

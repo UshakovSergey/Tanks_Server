@@ -1,15 +1,6 @@
-package com.mygdx.game;
+package mobi.mpk.tanks.server;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.VertexBufferObjectWithVAO;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
-
-import java.lang.ref.SoftReference;
 
 public class MainClass extends ApplicationAdapter {
 //    SpriteBatch batch;

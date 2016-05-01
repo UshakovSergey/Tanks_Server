@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package mobi.mpk.tanks.server;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
