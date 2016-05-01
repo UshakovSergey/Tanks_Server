@@ -22,7 +22,7 @@ public class Server implements Runnable {
 
     private DatagramSocket socket = null;
     private int serverPort = 4444;
-    private final int NUMBER_OF_BOTS = 5;
+    private final int NUMBER_OF_BOTS = 10;
     private ArrayList<PseudoTank> botList = new ArrayList<PseudoTank>();
     private Player p1 = null;
     private Player p2 = null;
@@ -30,7 +30,7 @@ public class Server implements Runnable {
     public Server() {
 
         for (int i = 0; i < NUMBER_OF_BOTS; i++) {
-            botList.add(new PseudoTank(new Vector2(BotTank.rn.nextInt(500), BotTank.rn.nextInt(500)), new Vector2(BotTank.rn.nextInt(4) - 1.5f, BotTank.rn.nextInt(4) - 1.5f)));
+            botList.add(new PseudoTank(new Vector2(BotTank.rn.nextInt(500), BotTank.rn.nextInt(500)), new Vector2(BotTank.rn.nextInt(4) - 1.5f, 0)));
         }
 
         try {
@@ -49,8 +49,8 @@ public class Server implements Runnable {
             while (true) {
                 if (p1 == null) {      // много одинакового кода, возможно надо будет выносить в методы суперкласа для классов клиента и сервера
 
-                    byte[] incomingData = new byte[1024];
-                    DatagramPacket packet = new DatagramPacket(incomingData, 1024);
+                    byte[] incomingData = new byte[2048];
+                    DatagramPacket packet = new DatagramPacket(incomingData, 2048);
                     socket.receive(packet);
                     incomingData = packet.getData();
                     ByteArrayInputStream in = new ByteArrayInputStream(incomingData);
@@ -74,8 +74,8 @@ public class Server implements Runnable {
                 } else {
 
                     if (p2 == null) {     // много одинакового кода, возможно надо будет выносить в методы суперкласа для классов клиента и сервера
-                        byte[] incomingData = new byte[1024];
-                        DatagramPacket packet = new DatagramPacket(incomingData, 1024);
+                        byte[] incomingData = new byte[2048];
+                        DatagramPacket packet = new DatagramPacket(incomingData, 2048);
                         socket.receive(packet);
                         incomingData = packet.getData();
                         ByteArrayInputStream in = new ByteArrayInputStream(incomingData);
@@ -100,9 +100,14 @@ public class Server implements Runnable {
 
                 if (p1 != null && p2 != null) {
 
+                    for (int i = 0; i < botList.size() ; i++) {
+                       botList.get(i).update();
+                    }
+
                     TimeUnit.MICROSECONDS.sleep(20);
 
                     Packet newData = getPacket(socket);
+                    newData.setBotSet(botList);
 
                     if (newData.getWhoSent().trim().equals("p1")) {
                         sendPacket(socket, p2.getPlayerAddress(), p2.getPlayerPort(), newData);
@@ -126,8 +131,8 @@ public class Server implements Runnable {
     // надо будет выносить в методы суперкласа, от него будут наследоваться классы клиент и сервер (те же методы в сервере)
     public Packet getPacket(DatagramSocket socket) {
 
-        byte[] incomingData = new byte[1024];
-        DatagramPacket packet = new DatagramPacket(incomingData, 1024);
+        byte[] incomingData = new byte[2048];
+        DatagramPacket packet = new DatagramPacket(incomingData, 2048);
 
         try {
             socket.receive(packet);
@@ -167,22 +172,5 @@ public class Server implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-
-    }
-
-    public void update() {
-
-   /*     plTank.update();
-        for (int i = 0; i < botList.size; i++) {
-            botList.get(i).update();
-            if (plTank.store.size() > 0) {
-                for (int j = 0; j < plTank.store.size(); j++) {
-                    if (botList.get(i).Position.cpy().add(botList.get(i).tankTextureSize / 2, botList.get(i).tankTextureSize / 2).sub(plTank.store.get(j).getBulletPosition()).len() < botList.get(i).tankTextureSize / 2 && !plTank.store.get(j).isDestroyed()) {
-                        botList.get(i).destroy();
-                        plTank.store.get(j).destroy();
-                    }
-                }
-            }
-        } */
     }
 }
